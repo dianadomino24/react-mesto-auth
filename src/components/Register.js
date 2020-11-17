@@ -40,7 +40,7 @@ const Register = () => {
     return (
         <div className="register">
             <RegisterLoginTemplate
-                name="login"
+                // name="login"
                 title="Регистрация"
                 onSubmit={handleSubmit}
             >

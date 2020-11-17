@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-// import { setToken } from '../utils/token'
-// import * as duckAuth from '../duckAuth.js'
+import RegisterLoginTemplate from './RegisterLoginTemplate'
 
 const Login = ({ handleLogin }) => {
     const [data, setData] = useState({
@@ -20,13 +19,13 @@ const Login = ({ handleLogin }) => {
         }))
     }
 
-    //     const handleSubmit = (e) => {
-    //         e.preventDefault()
-    //         const { username, password } = data
+        const handleSubmit = (e) => {
+            e.preventDefault()
+            const { username, password } = data
 
-    //         if (!username || !password) {
-    //             return
-    //         }
+            if (!username || !password) {
+                return
+            }
 
     //         duckAuth
     //             .authorize(username, password)
@@ -44,49 +43,56 @@ const Login = ({ handleLogin }) => {
     //                 }
     //             })
     //             .catch((err) => console.log(err))
-    //     }
+        }
 
     return (
-        // <div onSubmit={handleSubmit} className="login">
-        //     <Logo title={'CryptoDucks'} />
-        <p className="login__welcome">
-            Это приложение содержит конфиденциальную информацию. Пожалуйста,
-            войдите или зарегистрируйтесь, чтобы получить доступ к CryptoDucks.
-        </p>
-        //     <p className="login__error">{message}</p>
-        //     <form className="login__form">
-        //         <label htmlFor="username">Логин:</label>
-        //         <input
-        //             id="username"
-        //             required
-        //             name="username"
-        //             type="text"
-        //             value={data.username}
-        //             onChange={handleChange}
-        //         />
-        //         <label htmlFor="password">Пароль:</label>
-        //         <input
-        //             id="password"
-        //             required
-        //             name="password"
-        //             type="password"
-        //             value={data.password}
-        //             onChange={handleChange}
-        //         />
-        //         <div className="login__button-container">
-        //             <button type="submit" className="login__link">
-        //                 Войти
-        //             </button>
-        //         </div>
-        //     </form>
+            <div className="login">
+            <RegisterLoginTemplate
+                // name="login"
+                title="Вход"
+                onSubmit={handleSubmit}
+            >
+                <label className="popup__label">
+                    <input
+                        type="email"
+                        value={data.email}
+                        onChange={handleChange}
+                        name="email"
+                        placeholder="Email"
+                        id="email"
+                        className="input popup__input popup__input_type_dark"
+                        required
+                        minLength="2"
+                        maxLength="320"
+                    />
+                    <span className="popup__input-error"></span>
+                </label>
+                <label className="popup__label">
+                    <input
+                        type="password"
+                        value={data.password}
+                        onChange={handleChange}
+                        name="password"
+                        id="password"
+                        placeholder="Пароль"
+                        className="input popup__input popup__input_type_dark"
+                        required
+                        minLength="2"
+                        maxLength="200"
+                    />
+                    <span className="popup__input-error"></span>
+                </label>
+                <button
+                    className='link popup__save-button popup__save-button_type_dark'
+                    autoFocus
+                    type="submit"
+                >
+                    Войти
+                </button>
 
-        //     <div className="login__signup">
-        //         <p>Ещё не зарегистрированы?</p>
-        //         <Link to="/register" className="signup__link">
-        //             Зарегистрироваться
-        //         </Link>
-        //     </div>
-        // </div>
+            </RegisterLoginTemplate>
+            </div>
+
     )
 }
 
