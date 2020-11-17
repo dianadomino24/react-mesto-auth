@@ -60,7 +60,9 @@ function PopupWithForm({
 
     return (
         <section
-            className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`}
+            className={`popup popup_type_form popup_type_${name} ${
+                isOpen && 'popup_opened'
+            }`}
             onClick={closePopupByClickingOverlay}
         >
             <div className="popup__container">

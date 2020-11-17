@@ -10,6 +10,7 @@ function Main({
     cards,
     onCardLike,
     onCardDelete,
+    ...rest
 }) {
     const currentUserData = React.useContext(CurrentUserContext)
 

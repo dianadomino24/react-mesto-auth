@@ -1,16 +1,12 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-// import * as duckAuth from '../duckAuth.js'
-// import './styles/Register.css'
+import RegisterLoginTemplate from './RegisterLoginTemplate'
 
 const Register = () => {
     const [data, setData] = useState({
-        username: '',
         email: '',
         password: '',
-        confirmPassword: '',
     })
-    const [message, setMessage] = useState('')
     const history = useHistory()
 
     const handleChange = (e) => {
@@ -19,6 +15,11 @@ const Register = () => {
             ...prevData,
             [name]: value,
         }))
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const { email, password } = data
+        // register(email, password).catch((err) => console.log(err));
     }
 
     // const handleSubmit = (e) => {
@@ -38,6 +39,53 @@ const Register = () => {
 
     return (
         <div className="register">
+            <RegisterLoginTemplate
+                name="login"
+                title="Регистрация"
+                onSubmit={handleSubmit}
+            >
+                <label className="popup__label">
+                    <input
+                        type="email"
+                        value={data.email}
+                        onChange={handleChange}
+                        name="email"
+                        placeholder="Email"
+                        id="email"
+                        className="input popup__input popup__input_type_login"
+                        required
+                        minLength="2"
+                        maxLength="320"
+                    />
+                    <span className="popup__input-error"></span>
+                </label>
+                <label className="popup__label">
+                    <input
+                        type="password"
+                        value={data.password}
+                        onChange={handleChange}
+                        name="password"
+                        id="password"
+                        placeholder="Пароль"
+                        className="input popup__input popup__input_type_login"
+                        required
+                        minLength="2"
+                        maxLength="200"
+                    />
+                    <span className="popup__input-error"></span>
+                </label>
+                <button
+                    className={`link popup__save-button`}
+                    autoFocus
+                    type="submit"
+                >
+                    Зарегистрироваться
+                </button>
+                <Link to="/sign-in" className="popup__login-link">
+                    Уже зарегистрированны? Войти
+                </Link>
+            </RegisterLoginTemplate>
+
             {/* <Logo title={'CryptoDucks'} />
             <p className="register__welcome">Пожалуйста, зарегистрируйтесь.</p>
             <p className="register__error">{message}</p>

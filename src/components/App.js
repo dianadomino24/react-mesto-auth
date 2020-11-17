@@ -40,6 +40,10 @@ function App() {
     const [selectedCardDOM, setSelectedCardDOM] = useState()
 
     const [userData, setUserData] = React.useState({ email: '' })
+    const [loggedIn, setLoggedIn] = React.useState(false)
+    const history = useHistory()
+    const [message, setMessage] = React.useState('')
+    const [registerSuccess, setRegisterSuccess] = React.useState(false)
 
     // открывают попапы
     function handleEditAvatarClick() {
@@ -241,13 +245,28 @@ function App() {
         // history.push("/sign-in");
     }
 
+    const register = (email, password) => {
+        return
+    }
+    const authorize = (email, password) => {
+        return
+    }
+
     return (
-         <div className="page">
-                    <div className="page__container">
-            <CurrentUserContext.Provider value={currentUser}>
-              
-                        <Header onSignOut={onSignOut} userData={userData} />
-                        <Main
+        <div className="page">
+            <div className="page__container">
+                <CurrentUserContext.Provider value={currentUser}>
+                    <Header onSignOut={onSignOut} userData={userData} />
+                    <Switch>
+                        <Route path="/sign-in">
+                            <Login authorize={authorize} message={message} />
+                        </Route>
+                        <Route path="/sign-up">
+                            <Register register={register} message={message} />
+                        </Route>
+                        <ProtectedRoute
+                            path="/"
+                            loggedIn={loggedIn}
                             onEditProfile={handleEditProfileClick}
                             onAddPlace={handleAddPlaceClick}
                             onEditAvatar={handleEditAvatarClick}
@@ -255,48 +274,49 @@ function App() {
                             cards={cards}
                             onCardLike={handleCardLike}
                             onCardDelete={handleCardDelete}
+                            component={Main}
                         />
-                        <Footer />
-                        <EditProfilePopup
-                            isOpen={isEditProfilePopupOpen}
-                            onClose={closeAllPopups}
-                            onUpdateUser={handleUpdateUser}
-                        />
+                    </Switch>
 
-                        <AddPlacePopup
-                            isOpen={isAddPlacePopupOpen}
-                            onClose={closeAllPopups}
-                            onAddPlace={handleAddPlaceSubmit}
-                        />
+                    {loggedIn && <Footer />}
+                    <EditProfilePopup
+                        isOpen={isEditProfilePopupOpen}
+                        onClose={closeAllPopups}
+                        onUpdateUser={handleUpdateUser}
+                    />
 
-                        <EditAvatarPopup
-                            isOpen={isEditAvatarPopupOpen}
-                            onClose={closeAllPopups}
-                            onUpdateAvatar={handleUpdateAvatar}
-                        />
+                    <AddPlacePopup
+                        isOpen={isAddPlacePopupOpen}
+                        onClose={closeAllPopups}
+                        onAddPlace={handleAddPlaceSubmit}
+                    />
 
-                        <PopupWithSubmit
-                            title="Вы уверены?"
-                            name="card-delete"
-                            card={selectedCard}
-                            cardDOM={selectedCardDOM}
-                            buttonText="Да"
-                            isOpen={isCardDeletePopupOpen}
-                            onClose={closeAllPopups}
-                            onCardDeleteSubmit={handleCardDeleteSubmit}
-                        ></PopupWithSubmit>
+                    <EditAvatarPopup
+                        isOpen={isEditAvatarPopupOpen}
+                        onClose={closeAllPopups}
+                        onUpdateAvatar={handleUpdateAvatar}
+                    />
 
-                        <ImagePopup
-                            name="picture-zoom"
-                            isOpen={isImgPopupOpen}
-                            card={selectedCard}
-                            onClose={closeAllPopups}
-                        />
-                        </CurrentUserContext.Provider>
-                    </div>
-                </div>
-            
-   
+                    <PopupWithSubmit
+                        title="Вы уверены?"
+                        name="card-delete"
+                        card={selectedCard}
+                        cardDOM={selectedCardDOM}
+                        buttonText="Да"
+                        isOpen={isCardDeletePopupOpen}
+                        onClose={closeAllPopups}
+                        onCardDeleteSubmit={handleCardDeleteSubmit}
+                    ></PopupWithSubmit>
+
+                    <ImagePopup
+                        name="picture-zoom"
+                        isOpen={isImgPopupOpen}
+                        card={selectedCard}
+                        onClose={closeAllPopups}
+                    />
+                </CurrentUserContext.Provider>
+            </div>
+        </div>
     )
 }
 
