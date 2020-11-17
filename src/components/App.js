@@ -10,6 +10,11 @@ import EditProfilePopup from './EditProfilePopup'
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
 import { cleanInputErrors } from './FormValidator'
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
+import Login from './Login'
+import ProtectedRoute from './ProtectedRoute'
+import Register from './Register'
+import InfoTooltip from './InfoTooltip'
 
 function App() {
     //состояние попапов
@@ -33,6 +38,8 @@ function App() {
     const [selectedCard, setSelectedCard] = useState()
     // для удаления карточки
     const [selectedCardDOM, setSelectedCardDOM] = useState()
+
+    const [userData, setUserData] = React.useState({ email: '' })
 
     // открывают попапы
     function handleEditAvatarClick() {
@@ -229,12 +236,17 @@ function App() {
             })
     }
 
+    function onSignOut() {
+        // removeToken();
+        // history.push("/sign-in");
+    }
+
     return (
-        <div className="App">
-            <CurrentUserContext.Provider value={currentUser}>
-                <div className="page">
+         <div className="page">
                     <div className="page__container">
-                        <Header />
+            <CurrentUserContext.Provider value={currentUser}>
+              
+                        <Header onSignOut={onSignOut} userData={userData} />
                         <Main
                             onEditProfile={handleEditProfileClick}
                             onAddPlace={handleAddPlaceClick}
@@ -280,10 +292,11 @@ function App() {
                             card={selectedCard}
                             onClose={closeAllPopups}
                         />
+                        </CurrentUserContext.Provider>
                     </div>
                 </div>
-            </CurrentUserContext.Provider>
-        </div>
+            
+   
     )
 }
 

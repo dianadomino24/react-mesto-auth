@@ -1,9 +1,13 @@
 @import url('./__logo/header__logo.css');
+@import url('./__button/header__button.css');
+@import url('./__link/header__link.css');
+@import url('./__user-info/header__user-info.css');
+@import url('./__email/header__email.css');
 
 .header {
     font-family: 'Inter', Arial, sans-serif;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
     padding-bottom: 40.6px;
