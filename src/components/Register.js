@@ -52,7 +52,7 @@ const Register = () => {
                         name="email"
                         placeholder="Email"
                         id="email"
-                        className="input popup__input popup__input_type_login"
+                        className="input popup__input popup__input_type_dark"
                         required
                         minLength="2"
                         maxLength="320"
@@ -67,7 +67,7 @@ const Register = () => {
                         name="password"
                         id="password"
                         placeholder="Пароль"
-                        className="input popup__input popup__input_type_login"
+                        className="input popup__input popup__input_type_dark"
                         required
                         minLength="2"
                         maxLength="200"
@@ -75,13 +75,13 @@ const Register = () => {
                     <span className="popup__input-error"></span>
                 </label>
                 <button
-                    className={`link popup__save-button`}
+                    className='link popup__save-button popup__save-button_type_dark'
                     autoFocus
                     type="submit"
                 >
                     Зарегистрироваться
                 </button>
-                <Link to="/sign-in" className="popup__login-link">
+                <Link to="/sign-in" className="link popup__login-link">
                     Уже зарегистрированны? Войти
                 </Link>
             </RegisterLoginTemplate>

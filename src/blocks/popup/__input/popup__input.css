@@ -6,6 +6,7 @@
     padding: 10px 0 10px 5px;
     width: 100%;
     margin-bottom: 35px;
+    box-sizing: border-box;
 }
 
 .popup__input::placeholder {

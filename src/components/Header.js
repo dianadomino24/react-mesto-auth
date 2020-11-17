@@ -15,12 +15,12 @@ function Header({ onSignOut, userData }) {
             </a>
             <Switch>
                 <Route path="/sign-up">
-                    <Link to="./sign-in" className="header__link">
+                    <Link to="./sign-in" className="link header__link">
                         Вход
                     </Link>
                 </Route>
                 <Route path="/sign-in">
-                    <Link to="./sign-up" className="header__link">
+                    <Link to="./sign-up" className="link header__link">
                         Регистрация
                     </Link>
                 </Route>

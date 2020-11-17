@@ -9,3 +9,8 @@
 .header__link:hover {
     cursor: pointer;
 }
+@media screen and (max-width: 500px) {
+    .header__link {
+        margin-right: 21%;
+    }
+}
