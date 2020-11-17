@@ -19,34 +19,34 @@ const Login = ({ handleLogin }) => {
         }))
     }
 
-        const handleSubmit = (e) => {
-            e.preventDefault()
-            const { username, password } = data
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const { username, password } = data
 
-            if (!username || !password) {
-                return
-            }
-
-    //         duckAuth
-    //             .authorize(username, password)
-    //             .then((data) => {
-    //                 if (!data) {
-    //                     setMessage('Что-то пошло не так!')
-    //                 }
-
-    //                 if (data.jwt) {
-    //                     setToken(data.jwt)
-    //                     setData({ username: '', password: '' })
-    //                     setMessage('')
-    //                     handleLogin(data.user)
-    //                     history.push('/ducks')
-    //                 }
-    //             })
-    //             .catch((err) => console.log(err))
+        if (!username || !password) {
+            return
         }
 
+        //         duckAuth
+        //             .authorize(username, password)
+        //             .then((data) => {
+        //                 if (!data) {
+        //                     setMessage('Что-то пошло не так!')
+        //                 }
+
+        //                 if (data.jwt) {
+        //                     setToken(data.jwt)
+        //                     setData({ username: '', password: '' })
+        //                     setMessage('')
+        //                     handleLogin(data.user)
+        //                     history.push('/ducks')
+        //                 }
+        //             })
+        //             .catch((err) => console.log(err))
+    }
+
     return (
-            <div className="login">
+        <div className="login">
             <RegisterLoginTemplate
                 // name="login"
                 title="Вход"
@@ -83,16 +83,14 @@ const Login = ({ handleLogin }) => {
                     <span className="popup__input-error"></span>
                 </label>
                 <button
-                    className='link popup__save-button popup__save-button_type_dark'
+                    className="link popup__save-button popup__save-button_type_dark"
                     autoFocus
                     type="submit"
                 >
                     Войти
                 </button>
-
             </RegisterLoginTemplate>
-            </div>
-
+        </div>
     )
 }
 

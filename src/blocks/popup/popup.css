@@ -16,7 +16,9 @@
 @import url(__input-error/popup__input-error.css);
 @import url(__input-error/_active/popup__input-error_active.css);
 @import url(__login-link/popup__login-link.css);
-@import url(_type_register-login/popup_type_register-login.css);
+@import url(__register-login/popup__register-login.css);
+@import url(__infotool-img/popup__infotool-img.css);
+@import url(__infotool-text/popup__infotool-text.css);
 
 .popup {
     position: fixed;

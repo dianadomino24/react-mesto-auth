@@ -75,7 +75,7 @@ const Register = () => {
                     <span className="popup__input-error"></span>
                 </label>
                 <button
-                    className='link popup__save-button popup__save-button_type_dark'
+                    className="link popup__save-button popup__save-button_type_dark"
                     autoFocus
                     type="submit"
                 >

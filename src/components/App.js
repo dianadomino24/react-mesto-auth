@@ -23,6 +23,7 @@ function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
     const [isCardDeletePopupOpen, setIsCardDeletePopupOpen] = useState(false)
     const [isImgPopupOpen, setIsImgPopupOpen] = useState(false)
+    const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false)
 
     const [cards, setCards] = useState([])
 
@@ -39,11 +40,11 @@ function App() {
     // для удаления карточки
     const [selectedCardDOM, setSelectedCardDOM] = useState()
 
-    const [userData, setUserData] = React.useState({ email: '' })
-    const [loggedIn, setLoggedIn] = React.useState(false)
+    const [userData, setUserData] = useState({ email: '' })
+    const [loggedIn, setLoggedIn] = useState(false)
     const history = useHistory()
-    const [message, setMessage] = React.useState('')
-    const [registerSuccess, setRegisterSuccess] = React.useState(false)
+    const [message, setMessage] = useState('')
+    const [registerSuccess, setRegisterSuccess] = useState(false)
 
     // открывают попапы
     function handleEditAvatarClick() {
@@ -74,6 +75,7 @@ function App() {
         setIsCardDeletePopupOpen(false)
         setIsImgPopupOpen(false)
         setSelectedCardDOM()
+        setInfoTooltipOpen(false)
     }
 
     // при монтировании компонента будет совершать запрос в API за пользовательскими данными и карточками
@@ -251,6 +253,9 @@ function App() {
     const authorize = (email, password) => {
         return
     }
+    function infoTooltipOpen() {
+        setInfoTooltipOpen(true)
+    }
 
     return (
         <div className="page">
@@ -279,6 +284,11 @@ function App() {
                     </Switch>
 
                     {loggedIn && <Footer />}
+                    <InfoTooltip
+                        isOpen={isInfoTooltipOpen}
+                        onClose={closeAllPopups}
+                        isSuccess={registerSuccess}
+                    />
                     <EditProfilePopup
                         isOpen={isEditProfilePopupOpen}
                         onClose={closeAllPopups}
