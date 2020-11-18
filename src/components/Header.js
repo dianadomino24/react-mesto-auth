@@ -2,8 +2,8 @@ import React from 'react'
 import logoPath from '../images/logo.svg'
 import { Route, Switch, Link } from 'react-router-dom'
 
-function Header({ onSignOut, userData }) {
-    const { email } = userData
+function Header({ onSignOut, userEmail }) {
+    const { email } = userEmail
     return (
         <header className="header page__header section">
             <a href="/" className="logo header__logo">

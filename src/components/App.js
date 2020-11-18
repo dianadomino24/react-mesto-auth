@@ -10,13 +10,13 @@ import EditProfilePopup from './EditProfilePopup'
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
 import { cleanInputErrors } from './FormValidator'
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import Login from './Login'
 import ProtectedRoute from './ProtectedRoute'
 import Register from './Register'
 import InfoTooltip from './InfoTooltip'
 import * as auth from '../utils/auth.js'
-import { getToken, removeToken, setToken } from '../utils/token'
+import { getToken, removeToken } from '../utils/token'
 
 function App() {
     //состояние попапов
@@ -42,13 +42,10 @@ function App() {
     // для удаления карточки
     const [selectedCardDOM, setSelectedCardDOM] = useState()
 
-    const [userData, setUserData] = useState({ email: '' })
+    const [userEmail, setUserEmail] = useState({ email: '' })
     const [loggedIn, setLoggedIn] = useState(false)
     const history = useHistory()
-    const [message, setMessage] = useState('')
     const [registerSuccess, setRegisterSuccess] = useState(false)
-
-    const BASE_URL = 'https://auth.nomoreparties.co'
 
     // открывают попапы
     function handleEditAvatarClick() {
@@ -81,11 +78,6 @@ function App() {
         setSelectedCardDOM()
         setInfoTooltipOpen(false)
     }
-
-    // при монтировании компонента будет проверять токен
-    useEffect(() => {
-        tokenCheck()
-    }, [])
 
     // при монтировании компонента будет совершать запрос в API за пользовательскими данными и карточками
     useEffect(() => {
@@ -260,9 +252,12 @@ function App() {
         history.push('/sign-in')
     }
 
-    const handleLogin = (userData) => {
+    const handleLogin = (email) => {
+        const userCurrentEmail = {
+            email: email,
+        }
+        setUserEmail(userCurrentEmail)
         setLoggedIn(true)
-        setUserData(userData)
     }
 
     const tokenCheck = () => {
@@ -274,29 +269,40 @@ function App() {
 
         auth.getContent(jwt).then((res) => {
             if (res) {
-                const userData = {
-                    email: res.email,
+                const userCurrentEmail = {
+                    email: res.data.email,
                 }
                 setLoggedIn(true)
-                setUserData(userData)
+                setUserEmail(userCurrentEmail)
                 history.push('/')
             }
         })
+    }
+    // при монтировании компонента будет проверять токен
+    useEffect(() => {
+        tokenCheck()
+    }, [])
+
+    function handleRegisterSuccess() {
+        setRegisterSuccess(true)
+    }
+    function handleRegisterFail() {
+        setRegisterSuccess(false)
     }
 
     return (
         <div className="page">
             <div className="page__container">
                 <CurrentUserContext.Provider value={currentUser}>
-                    <Header onSignOut={onSignOut} userData={userData} />
+                    <Header onSignOut={onSignOut} userEmail={userEmail} />
                     <Switch>
                         <Route path="/sign-in">
                             <Login handleLogin={handleLogin} />
                         </Route>
                         <Route path="/sign-up">
                             <Register
-                                message={message}
-                                setRegisterSuccess={setRegisterSuccess}
+                                handleRegisterSuccess={handleRegisterSuccess}
+                                handleRegisterFail={handleRegisterFail}
                                 infoTooltipOpen={infoTooltipOpen}
                             />
                         </Route>

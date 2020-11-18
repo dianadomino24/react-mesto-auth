@@ -1,6 +1,4 @@
-import { setToken } from './token'
-
-export const BASE_URL = 'https://api.nomoreparties.co'
+export const BASE_URL = 'https://auth.nomoreparties.co'
 
 export const register = (email, password) => {
     return fetch(`${BASE_URL}/signup`, {
@@ -12,7 +10,13 @@ export const register = (email, password) => {
         body: JSON.stringify({ email, password }),
     })
         .then((response) => {
-            return response.json()
+            try {
+                if (response.status === 201) {
+                    return response.json()
+                }
+            } catch (e) {
+                return e
+            }
         })
         .then((res) => {
             return res
@@ -21,6 +25,7 @@ export const register = (email, password) => {
 }
 
 export const authorize = (email, password) => {
+
     return fetch(`${BASE_URL}/signin`, {
         method: 'POST',
         headers: {
@@ -29,10 +34,15 @@ export const authorize = (email, password) => {
         },
         body: JSON.stringify({ email, password }),
     })
-        .then((response) => response.json())
+        .then((response) => response.json()
+        )
         .then((data) => {
-            if (data.user) {
-                setToken(data.jwt)
+          if (!data) {
+            console.log(`auth пользователь с email не найден : ${data}`)
+          }
+
+            if (data) {
+
                 return data
             } else {
                 return

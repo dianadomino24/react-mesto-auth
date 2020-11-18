@@ -1,12 +1,6 @@
 import React from 'react'
 
-function RegisterLoginTemplate({
-    // name,
-    title,
-    children,
-    handleSubmit,
-    ...rest
-}) {
+function RegisterLoginTemplate({ title, children, onSubmit }) {
     return (
         <>
             <section className="popup__register-login">
@@ -15,7 +9,7 @@ function RegisterLoginTemplate({
                         className="popup__form"
                         noValidate
                         // name={name}
-                        onSubmit={handleSubmit}
+                        onSubmit={onSubmit}
                     >
                         <h2 className="popup__title popup__title_type_login">
                             {title}

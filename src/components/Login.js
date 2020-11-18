@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import RegisterLoginTemplate from './RegisterLoginTemplate'
 import * as auth from '../utils/auth.js'
 import { setToken } from '../utils/token'
@@ -31,27 +31,22 @@ const Login = ({ handleLogin }) => {
         auth.authorize(email, password)
             .then((data) => {
                 if (!data) {
-                    setMessage('Что-то пошло не так при авторизации!')
+                    setMessage('Что-то пошло не так при авторизации в Login!')
                 }
-
-                if (data.jwt) {
-                    setToken(data.jwt)
-                    setData({ email: '', password: '' })
+                if (data.token) {
+                    setToken(data.token)
                     setMessage('')
-                    handleLogin(data.user)
+                    handleLogin(email)
                     history.push('/')
                 }
             })
+            .then(() => setData({ email: '', password: '' }))
             .catch((err) => console.log(err))
     }
 
     return (
         <div className="login">
-            <RegisterLoginTemplate
-                // name="login"
-                title="Вход"
-                onSubmit={handleSubmit}
-            >
+            <RegisterLoginTemplate title="Вход" onSubmit={handleSubmit}>
                 <label className="popup__label">
                     <input
                         type="email"

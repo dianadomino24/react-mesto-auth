@@ -5,7 +5,11 @@ import * as auth from '../utils/auth.js'
 import { formSelectorsObj } from '../utils/utils'
 import { FormValidator } from './FormValidator'
 
-const Register = ({ setRegisterSuccess, infoToolTipOpen }) => {
+const Register = ({
+    handleRegisterSuccess,
+    handleRegisterFail,
+    infoTooltipOpen,
+}) => {
     const [data, setData] = useState({
         email: '',
         password: '',
@@ -23,16 +27,23 @@ const Register = ({ setRegisterSuccess, infoToolTipOpen }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         const { email, password } = data
+
         auth.register(email, password).then((res) => {
-            if (res.status !== 400) {
-                setMessage('')
-                setRegisterSuccess(true)
-                infoToolTipOpen()
-                history.push('/login')
+            if (res) {
+                if (res.data) {
+                    setMessage('')
+                    handleRegisterSuccess()
+                    infoTooltipOpen()
+                    history.push('/sign-in')
+                } else if (res.status === 400) {
+                    setMessage('Неверно введены данные в Register')
+                    handleRegisterFail()
+                    infoTooltipOpen()
+                }
             } else {
-                setMessage('Ошибка при регистрации')
-                setRegisterSuccess(false)
-                infoToolTipOpen()
+                setMessage('Ошибка при регистрации в Register')
+                handleRegisterFail()
+                infoTooltipOpen()
             }
         })
     }
@@ -57,7 +68,9 @@ const Register = ({ setRegisterSuccess, infoToolTipOpen }) => {
                         minLength="2"
                         maxLength="320"
                     />
-                    <span className="popup__input-error">{message}</span>
+                    <span className="popup__input-error popup__input-error_active">
+                        {message}
+                    </span>
                 </label>
                 <label className="popup__label">
                     <input
