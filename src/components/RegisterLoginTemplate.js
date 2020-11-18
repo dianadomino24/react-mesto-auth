@@ -8,7 +8,6 @@ function RegisterLoginTemplate({ title, children, onSubmit }) {
                     <form
                         className="popup__form"
                         noValidate
-                        // name={name}
                         onSubmit={onSubmit}
                     >
                         <h2 className="popup__title popup__title_type_login">
