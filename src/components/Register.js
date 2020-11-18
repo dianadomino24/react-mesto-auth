@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import RegisterLoginTemplate from './RegisterLoginTemplate'
+import * as auth from '../utils/auth.js'
+import { formSelectorsObj } from '../utils/utils'
+import { FormValidator } from './FormValidator'
 
-const Register = () => {
+const Register = ({ setRegisterSuccess, infoToolTipOpen }) => {
     const [data, setData] = useState({
         email: '',
         password: '',
     })
     const history = useHistory()
+    const [message, setMessage] = useState('')
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -19,23 +23,19 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         const { email, password } = data
-        // register(email, password).catch((err) => console.log(err));
+        auth.register(email, password).then((res) => {
+            if (res.status !== 400) {
+                setMessage('')
+                setRegisterSuccess(true)
+                infoToolTipOpen()
+                history.push('/login')
+            } else {
+                setMessage('Ошибка при регистрации')
+                setRegisterSuccess(false)
+                infoToolTipOpen()
+            }
+        })
     }
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault()
-    //     const { username, email, password, confirmPassword } = data
-    //     if (password === confirmPassword) {
-    //         duckAuth.register(username, password, email).then((res) => {
-    //             if (res.statusCode !== 400) {
-    //                 setMessage('')
-    //                 history.push('/login')
-    //             } else {
-    //                 setMessage('Что-то пошло не так!')
-    //             }
-    //         })
-    //     }
-    // }
 
     return (
         <div className="register">
@@ -57,7 +57,7 @@ const Register = () => {
                         minLength="2"
                         maxLength="320"
                     />
-                    <span className="popup__input-error"></span>
+                    <span className="popup__input-error">{message}</span>
                 </label>
                 <label className="popup__label">
                     <input
@@ -72,7 +72,9 @@ const Register = () => {
                         minLength="2"
                         maxLength="200"
                     />
-                    <span className="popup__input-error"></span>
+                    <span className="popup__input-error popup__input-error_active">
+                        {message}
+                    </span>
                 </label>
                 <button
                     className="link popup__save-button popup__save-button_type_dark"
@@ -85,55 +87,6 @@ const Register = () => {
                     Уже зарегистрированны? Войти
                 </Link>
             </RegisterLoginTemplate>
-
-            {/* <Logo title={'CryptoDucks'} />
-            <p className="register__welcome">Пожалуйста, зарегистрируйтесь.</p>
-            <p className="register__error">{message}</p>
-            <form onSubmit={handleSubmit} className="register__form">
-                <label htmlFor="username">Логин:</label>
-                <input
-                    id="username"
-                    name="username"
-                    type="text"
-                    value={data.username}
-                    onChange={handleChange}
-                />
-                <label htmlFor="email">Email:</label>
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={data.email}
-                    onChange={handleChange}
-                />
-                <label htmlFor="password">Пароль:</label>
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={data.password}
-                    onChange={handleChange}
-                />
-                <label htmlFor="confirmPassword">Подтвердите пароль:</label>
-                <input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type="password"
-                    value={data.confirmPassword}
-                    onChange={handleChange}
-                />
-                <div className="register__button-container">
-                    <button type="submit" className="register__link">
-                        Зарегистрироваться
-                    </button>
-                </div>
-            </form>
-            <div className="register__signin">
-                <p>Уже зарегистрированы?</p>
-                <Link to="login" className="register__login-link">
-                    Войти
-                </Link>
-            </div> */}
         </div>
     )
 }

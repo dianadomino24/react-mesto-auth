@@ -15,6 +15,8 @@ import Login from './Login'
 import ProtectedRoute from './ProtectedRoute'
 import Register from './Register'
 import InfoTooltip from './InfoTooltip'
+import * as auth from '../utils/auth.js'
+import { getToken, removeToken, setToken } from '../utils/token'
 
 function App() {
     //состояние попапов
@@ -45,6 +47,8 @@ function App() {
     const history = useHistory()
     const [message, setMessage] = useState('')
     const [registerSuccess, setRegisterSuccess] = useState(false)
+
+    const BASE_URL = 'https://auth.nomoreparties.co'
 
     // открывают попапы
     function handleEditAvatarClick() {
@@ -77,6 +81,11 @@ function App() {
         setSelectedCardDOM()
         setInfoTooltipOpen(false)
     }
+
+    // при монтировании компонента будет проверять токен
+    useEffect(() => {
+        tokenCheck()
+    }, [])
 
     // при монтировании компонента будет совершать запрос в API за пользовательскими данными и карточками
     useEffect(() => {
@@ -242,19 +251,37 @@ function App() {
             })
     }
 
-    function onSignOut() {
-        // removeToken();
-        // history.push("/sign-in");
-    }
-
-    const register = (email, password) => {
-        return
-    }
-    const authorize = (email, password) => {
-        return
-    }
     function infoTooltipOpen() {
         setInfoTooltipOpen(true)
+    }
+
+    function onSignOut() {
+        removeToken()
+        history.push('/sign-in')
+    }
+
+    const handleLogin = (userData) => {
+        setLoggedIn(true)
+        setUserData(userData)
+    }
+
+    const tokenCheck = () => {
+        const jwt = getToken()
+
+        if (!jwt) {
+            return
+        }
+
+        auth.getContent(jwt).then((res) => {
+            if (res) {
+                const userData = {
+                    email: res.email,
+                }
+                setLoggedIn(true)
+                setUserData(userData)
+                history.push('/')
+            }
+        })
     }
 
     return (
@@ -264,10 +291,14 @@ function App() {
                     <Header onSignOut={onSignOut} userData={userData} />
                     <Switch>
                         <Route path="/sign-in">
-                            <Login authorize={authorize} message={message} />
+                            <Login handleLogin={handleLogin} />
                         </Route>
                         <Route path="/sign-up">
-                            <Register register={register} message={message} />
+                            <Register
+                                message={message}
+                                setRegisterSuccess={setRegisterSuccess}
+                                infoTooltipOpen={infoTooltipOpen}
+                            />
                         </Route>
                         <ProtectedRoute
                             path="/"

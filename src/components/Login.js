@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import RegisterLoginTemplate from './RegisterLoginTemplate'
+import * as auth from '../utils/auth.js'
+import { setToken } from '../utils/token'
 
 const Login = ({ handleLogin }) => {
     const [data, setData] = useState({
-        username: '',
+        email: '',
         password: '',
     })
-
-    const [message, setMessage] = useState('')
     const history = useHistory()
+    const [message, setMessage] = useState('')
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -21,28 +22,27 @@ const Login = ({ handleLogin }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const { username, password } = data
+        const { email, password } = data
 
-        if (!username || !password) {
+        if (!email || !password) {
             return
         }
 
-        //         duckAuth
-        //             .authorize(username, password)
-        //             .then((data) => {
-        //                 if (!data) {
-        //                     setMessage('Что-то пошло не так!')
-        //                 }
+        auth.authorize(email, password)
+            .then((data) => {
+                if (!data) {
+                    setMessage('Что-то пошло не так при авторизации!')
+                }
 
-        //                 if (data.jwt) {
-        //                     setToken(data.jwt)
-        //                     setData({ username: '', password: '' })
-        //                     setMessage('')
-        //                     handleLogin(data.user)
-        //                     history.push('/ducks')
-        //                 }
-        //             })
-        //             .catch((err) => console.log(err))
+                if (data.jwt) {
+                    setToken(data.jwt)
+                    setData({ email: '', password: '' })
+                    setMessage('')
+                    handleLogin(data.user)
+                    history.push('/')
+                }
+            })
+            .catch((err) => console.log(err))
     }
 
     return (
@@ -65,7 +65,7 @@ const Login = ({ handleLogin }) => {
                         minLength="2"
                         maxLength="320"
                     />
-                    <span className="popup__input-error"></span>
+                    <span className="popup__input-error">{message}</span>
                 </label>
                 <label className="popup__label">
                     <input
@@ -80,7 +80,7 @@ const Login = ({ handleLogin }) => {
                         minLength="2"
                         maxLength="200"
                     />
-                    <span className="popup__input-error"></span>
+                    <span className="popup__input-error">{message}</span>
                 </label>
                 <button
                     className="link popup__save-button popup__save-button_type_dark"
