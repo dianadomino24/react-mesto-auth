@@ -8,8 +8,8 @@ const ProtectedRoute = ({ component: Component, ...props }) => {
                 props.loggedIn === true ? (
                     <Component {...props} />
                 ) : (
-                    // <Redirect to="./sign-in?redirect=/" />
-                    <Redirect to="./sign-up" />
+
+                    <Redirect to="/sign-up" />
                 )
             }
         </Route>

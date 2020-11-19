@@ -1,5 +1,5 @@
 import React from 'react'
-
+// общий шаблон для форм регистрации и логина
 function RegisterLoginTemplate({ title, children, onSubmit }) {
     return (
         <>

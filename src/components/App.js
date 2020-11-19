@@ -45,6 +45,7 @@ function App() {
     const [userEmail, setUserEmail] = useState({ email: '' })
     const [loggedIn, setLoggedIn] = useState(false)
     const history = useHistory()
+    // для показа (не)успешной регистрации
     const [registerSuccess, setRegisterSuccess] = useState(false)
 
     // открывают попапы
@@ -296,9 +297,6 @@ function App() {
                 <CurrentUserContext.Provider value={currentUser}>
                     <Header onSignOut={onSignOut} userEmail={userEmail} />
                     <Switch>
-                        <Route path="/sign-in">
-                            <Login handleLogin={handleLogin} />
-                        </Route>
                         <Route path="/sign-up">
                             <Register
                                 handleRegisterSuccess={handleRegisterSuccess}
@@ -306,6 +304,10 @@ function App() {
                                 infoTooltipOpen={infoTooltipOpen}
                             />
                         </Route>
+                        <Route path="/sign-in">
+                            <Login handleLogin={handleLogin} />
+                        </Route>
+
                         <ProtectedRoute
                             path="/"
                             loggedIn={loggedIn}
