@@ -1,16 +1,11 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import RegisterLoginTemplate from './RegisterLoginTemplate'
-import * as auth from '../utils/auth.js'
-import { setToken } from '../utils/token'
 
-const Login = ({ handleLogin }) => {
+const Login = ({ onLogin, message }) => {
     const [data, setData] = useState({
         email: '',
         password: '',
     })
-    const history = useHistory()
-    const [message, setMessage] = useState('')
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -27,20 +22,12 @@ const Login = ({ handleLogin }) => {
         if (!email || !password) {
             return
         }
-
-        auth.authorize(email, password)
-            .then((data) => {
-                if (!data) {
-                    setMessage('Что-то пошло не так при авторизации в Login!')
-                }
-                if (data.token) {
-                    setToken(data.token)
-                    setMessage('')
-                    handleLogin(email)
-                    history.push('/')
+        onLogin(email, password)
+            .then((loggedIn) => {
+                if (loggedIn) {
+                    setData({ email: '', password: '' })
                 }
             })
-            .then(() => setData({ email: '', password: '' }))
             .catch((err) => console.log(err))
     }
 

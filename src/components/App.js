@@ -17,6 +17,7 @@ import Register from './Register'
 import InfoTooltip from './InfoTooltip'
 import * as auth from '../utils/auth.js'
 import { getToken, removeToken } from '../utils/token'
+import { setToken } from '../utils/token'
 
 function App() {
     //состояние попапов
@@ -45,6 +46,7 @@ function App() {
     const [userEmail, setUserEmail] = useState({ email: '' })
     const [loggedIn, setLoggedIn] = useState(false)
     const history = useHistory()
+    const [message, setMessage] = useState('')
     // для показа (не)успешной регистрации
     const [registerSuccess, setRegisterSuccess] = useState(false)
 
@@ -253,12 +255,22 @@ function App() {
         history.push('/sign-in')
     }
 
-    const handleLogin = (email) => {
-        const userCurrentEmail = {
-            email: email,
-        }
-        setUserEmail(userCurrentEmail)
-        setLoggedIn(true)
+    function handleLogin(email, password) {
+        return auth.authorize(email, password).then((data) => {
+            if (!data) {
+                setMessage('Что-то пошло не так при авторизации в Login!')
+                return false
+            }
+            if (data.token) {
+                setToken(data.token)
+                setMessage('')
+
+                setUserEmail({ email: email })
+                setLoggedIn(true)
+                history.push('/')
+                return loggedIn
+            }
+        })
     }
 
     const tokenCheck = () => {
@@ -305,7 +317,7 @@ function App() {
                             />
                         </Route>
                         <Route path="/sign-in">
-                            <Login handleLogin={handleLogin} />
+                            <Login onLogin={handleLogin} message={message} />
                         </Route>
 
                         <ProtectedRoute
