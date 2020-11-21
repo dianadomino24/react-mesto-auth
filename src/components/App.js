@@ -272,6 +272,35 @@ function App() {
             }
         })
     }
+    function handleRegisterSuccess() {
+        setRegisterSuccess(true)
+    }
+    function handleRegisterFail() {
+        setRegisterSuccess(false)
+    }
+
+
+    function handleRegister(email, password) {
+      return auth.register(email, password).then((res) => {
+            if (res) {
+                if (res.data) {
+                    setMessage('')
+                    handleRegisterSuccess()
+                    infoTooltipOpen()
+                    history.push('/sign-in')
+                } else if (res.status === 400) {
+                    setMessage('Неверно введены данные в Register')
+                    handleRegisterFail()
+                    infoTooltipOpen()
+                }
+            } else {
+                setMessage('Ошибка при регистрации в Register')
+                handleRegisterFail()
+                infoTooltipOpen()
+            }
+        })
+    }
+
 
     const tokenCheck = () => {
         const jwt = getToken()
@@ -296,12 +325,6 @@ function App() {
         tokenCheck()
     }, [])
 
-    function handleRegisterSuccess() {
-        setRegisterSuccess(true)
-    }
-    function handleRegisterFail() {
-        setRegisterSuccess(false)
-    }
 
     return (
         <div className="page">
@@ -311,9 +334,8 @@ function App() {
                     <Switch>
                         <Route path="/sign-up">
                             <Register
-                                handleRegisterSuccess={handleRegisterSuccess}
-                                handleRegisterFail={handleRegisterFail}
-                                infoTooltipOpen={infoTooltipOpen}
+                                onRegister={handleRegister}
+                                message={message}
                             />
                         </Route>
                         <Route path="/sign-in">

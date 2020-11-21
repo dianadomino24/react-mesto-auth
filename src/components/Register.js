@@ -1,21 +1,17 @@
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import RegisterLoginTemplate from './RegisterLoginTemplate'
-import * as auth from '../utils/auth.js'
-import { formSelectorsObj } from '../utils/utils'
-import { FormValidator } from './FormValidator'
+
 
 const Register = ({
-    handleRegisterSuccess,
-    handleRegisterFail,
-    infoTooltipOpen,
+    onRegister,
+    message
 }) => {
     const [data, setData] = useState({
         email: '',
         password: '',
     })
-    const history = useHistory()
-    const [message, setMessage] = useState('')
+
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -28,24 +24,9 @@ const Register = ({
         e.preventDefault()
         const { email, password } = data
 
-        auth.register(email, password).then((res) => {
-            if (res) {
-                if (res.data) {
-                    setMessage('')
-                    handleRegisterSuccess()
-                    infoTooltipOpen()
-                    history.push('/sign-in')
-                } else if (res.status === 400) {
-                    setMessage('Неверно введены данные в Register')
-                    handleRegisterFail()
-                    infoTooltipOpen()
-                }
-            } else {
-                setMessage('Ошибка при регистрации в Register')
-                handleRegisterFail()
-                infoTooltipOpen()
-            }
-        })
+        onRegister(email, password)
+        .catch((err) => console.log(err))
+
     }
 
     return (
