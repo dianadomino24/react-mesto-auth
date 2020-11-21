@@ -21,7 +21,7 @@ export const register = (email, password) => {
         .then((res) => {
             return res
         })
-        .catch((err) => console.log(`auth register error: ${err}`))
+
 }
 
 export const authorize = (email, password) => {
@@ -48,7 +48,7 @@ export const authorize = (email, password) => {
                 return
             }
         })
-        .catch((err) => console.log(`auth authorize error: ${err}`))
+
 }
 
 export const getContent = (token) => {

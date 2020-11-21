@@ -28,7 +28,9 @@ const Login = ({ onLogin, message }) => {
                     setData({ email: '', password: '' })
                 }
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                console.log(`onLogin: ${err}`)
+            })
     }
 
     return (

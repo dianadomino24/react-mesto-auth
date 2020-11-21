@@ -75,10 +75,8 @@ function App() {
         setIsEditAvatarPopupOpen(false)
         setIsEditProfilePopupOpen(false)
         setIsAddPlacePopupOpen(false)
-        setSelectedCard()
         setIsCardDeletePopupOpen(false)
         setIsImgPopupOpen(false)
-        setSelectedCardDOM()
         setInfoTooltipOpen(false)
     }
 
@@ -279,9 +277,8 @@ function App() {
         setRegisterSuccess(false)
     }
 
-
     function handleRegister(email, password) {
-      return auth.register(email, password).then((res) => {
+        return auth.register(email, password).then((res) => {
             if (res) {
                 if (res.data) {
                     setMessage('')
@@ -301,7 +298,6 @@ function App() {
         })
     }
 
-
     const tokenCheck = () => {
         const jwt = getToken()
 
@@ -309,22 +305,25 @@ function App() {
             return
         }
 
-        auth.getContent(jwt).then((res) => {
-            if (res) {
-                const userCurrentEmail = {
-                    email: res.data.email,
+        auth.getContent(jwt)
+            .then((res) => {
+                if (res) {
+                    const userCurrentEmail = {
+                        email: res.data.email,
+                    }
+                    setLoggedIn(true)
+                    setUserEmail(userCurrentEmail)
+                    history.push('/')
                 }
-                setLoggedIn(true)
-                setUserEmail(userCurrentEmail)
-                history.push('/')
-            }
-        })
+            })
+            .catch((err) => {
+                console.log(`getContent: ${err}`)
+            })
     }
     // при монтировании компонента будет проверять токен
     useEffect(() => {
         tokenCheck()
     }, [])
-
 
     return (
         <div className="page">

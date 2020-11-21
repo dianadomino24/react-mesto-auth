@@ -2,16 +2,11 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import RegisterLoginTemplate from './RegisterLoginTemplate'
 
-
-const Register = ({
-    onRegister,
-    message
-}) => {
+const Register = ({ onRegister, message }) => {
     const [data, setData] = useState({
         email: '',
         password: '',
     })
-
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -24,18 +19,14 @@ const Register = ({
         e.preventDefault()
         const { email, password } = data
 
-        onRegister(email, password)
-        .catch((err) => console.log(err))
-
+        onRegister(email, password).catch((err) => {
+            console.log(`onRegister: ${err}`)
+        })
     }
 
     return (
         <div className="register">
-            <RegisterLoginTemplate
-                // name="login"
-                title="Регистрация"
-                onSubmit={handleSubmit}
-            >
+            <RegisterLoginTemplate title="Регистрация" onSubmit={handleSubmit}>
                 <label className="popup__label">
                     <input
                         type="email"
