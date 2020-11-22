@@ -17,15 +17,13 @@ function ImagePopup({ card, onClose, isOpen, name }) {
             close()
         }
     }
+    if (isOpen) {
+        window.addEventListener('keydown', handleEscClose)}
 
-    if (card) {
-        window.addEventListener('keydown', handleEscClose)
-
-        return (
+    return (
             <section
-                className={`popup popup_type_${name} ${
-                    isOpen && 'popup_opened'
-                }`}
+                className={`popup popup_type_${name} ${isOpen && 'popup_opened'}
+                `}
                 onClick={closePopupByClickingOverlay}
             >
                 <div className="popup__container-pic-zoom">
@@ -35,16 +33,17 @@ function ImagePopup({ card, onClose, isOpen, name }) {
                     />
                     <figure className="picture-zoom">
                         <img
-                            src={card.link}
-                            alt={card.name}
+                            src={card? card.link : ''}
+                            alt={card? card.name : ''}
                             className="picture-zoom__img"
                         />
-                        <p className="picture-zoom__title">{card.name}</p>
+                        <p className="picture-zoom__title">{card? card.name : ''}</p>
                     </figure>
                 </div>
             </section>
-        )
-    } else return ''
+    )
+
 }
+
 
 export default ImagePopup
