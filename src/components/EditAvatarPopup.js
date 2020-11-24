@@ -1,13 +1,9 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import PopupWithForm from './PopupWithForm'
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     const avatarInput = useRef({})
-    const [avatar, setAvatar] = useState('')
 
-    function handleChange(e) {
-        setAvatar(e.target.value)
-    }
     function handleSubmit(e) {
         onUpdateAvatar({
             avatar: avatarInput.current.value,
@@ -26,7 +22,6 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
             <label className="popup__label">
                 <input
                     ref={avatarInput}
-                    onChange={handleChange}
                     type="url"
                     name="avatar"
                     id="avatar"
