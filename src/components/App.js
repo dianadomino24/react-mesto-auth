@@ -254,22 +254,32 @@ function App() {
     }
 
     function handleLogin(email, password) {
-      auth.authorize(email, password).then((data) => {
-            if (!data) {
-                setMessage('Что-то пошло не так при авторизации в Login!')
-                return false
-            }
-            if (data.token) {
-                setToken(data.token)
-                setMessage('')
+        auth.authorize(email, password)
+            .then((data) => {
+                if (!data) {
+                    setMessage('Что-то пошло не так при авторизации в Login!')
+                    return false
+                }
+                if (data.token) {
+                    setToken(data.token)
+                    setMessage('')
 
-                setUserEmail({ email: email })
-                setLoggedIn(true)
-                history.push('/')
-                return loggedIn
-            }
-        }).catch((err) => {
-                console.log(`App authorize: ${err}`)
+                    setUserEmail({ email: email })
+                    setLoggedIn(true)
+                    history.push('/')
+                    return loggedIn
+                }
+            })
+            .catch((err) => {
+                if (err === 401) {
+                    return console.log(
+                        `Пользователь с email не найден : ${err}`
+                    )
+                }
+                if (err === 400) {
+                    return console.log(`Не передано одно из полей : ${err}`)
+                }
+                console.log(`App authorize Error: ${err}`)
             })
     }
     function handleRegisterSuccess() {
@@ -280,26 +290,28 @@ function App() {
     }
 
     function handleRegister(email, password) {
-        auth.register(email, password).then((res) => {
-            if (res) {
-                if (res.data) {
-                    setMessage('')
-                    handleRegisterSuccess()
-                    infoTooltipOpen()
-                    history.push('/sign-in')
-                } else if (res.status === 400) {
-                    setMessage('Неверно введены данные в Register')
+        auth.register(email, password)
+            .then((res) => {
+                if (res) {
+                    if (res.data) {
+                        setMessage('')
+                        handleRegisterSuccess()
+                        infoTooltipOpen()
+                        history.push('/sign-in')
+                    } else if (res.status === 400) {
+                        setMessage('Неверно введены данные в Register')
+                        handleRegisterFail()
+                        infoTooltipOpen()
+                    }
+                } else {
+                    setMessage('Ошибка при регистрации в Register')
                     handleRegisterFail()
                     infoTooltipOpen()
                 }
-            } else {
-                setMessage('Ошибка при регистрации в Register')
-                handleRegisterFail()
-                infoTooltipOpen()
-            }
-        }).catch((err) => {
-            console.log(`App onRegister: ${err}`)
-        })
+            })
+            .catch((err) => {
+                console.log(`App onRegister: ${err}`)
+            })
     }
 
     const tokenCheck = () => {
@@ -342,7 +354,11 @@ function App() {
                             />
                         </Route>
                         <Route path="/sign-in">
-                            <Login onLogin={handleLogin} message={message} loggedIn={loggedIn}/>
+                            <Login
+                                onLogin={handleLogin}
+                                message={message}
+                                loggedIn={loggedIn}
+                            />
                         </Route>
 
                         <ProtectedRoute

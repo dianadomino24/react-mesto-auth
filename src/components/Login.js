@@ -25,11 +25,11 @@ const Login = ({ onLogin, message, loggedIn }) => {
         onLogin(email, password)
     }
 
-        React.useEffect(() => {
-      if (loggedIn) {
-        setData({ email: '', password: '' })
-      }
-    }, [loggedIn]);
+    React.useEffect(() => {
+        if (loggedIn) {
+            setData({ email: '', password: '' })
+        }
+    }, [loggedIn])
 
     return (
         <div className="login">
