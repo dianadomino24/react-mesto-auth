@@ -19,9 +19,7 @@ const Register = ({ onRegister, message }) => {
         e.preventDefault()
         const { email, password } = data
 
-        onRegister(email, password).catch((err) => {
-            console.log(`onRegister: ${err}`)
-        })
+        onRegister(email, password)
     }
 
     return (

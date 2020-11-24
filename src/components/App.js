@@ -254,7 +254,7 @@ function App() {
     }
 
     function handleLogin(email, password) {
-        return auth.authorize(email, password).then((data) => {
+      auth.authorize(email, password).then((data) => {
             if (!data) {
                 setMessage('Что-то пошло не так при авторизации в Login!')
                 return false
@@ -268,7 +268,9 @@ function App() {
                 history.push('/')
                 return loggedIn
             }
-        })
+        }).catch((err) => {
+                console.log(`App authorize: ${err}`)
+            })
     }
     function handleRegisterSuccess() {
         setRegisterSuccess(true)
@@ -278,7 +280,7 @@ function App() {
     }
 
     function handleRegister(email, password) {
-        return auth.register(email, password).then((res) => {
+        auth.register(email, password).then((res) => {
             if (res) {
                 if (res.data) {
                     setMessage('')
@@ -295,6 +297,8 @@ function App() {
                 handleRegisterFail()
                 infoTooltipOpen()
             }
+        }).catch((err) => {
+            console.log(`App onRegister: ${err}`)
         })
     }
 
@@ -338,7 +342,7 @@ function App() {
                             />
                         </Route>
                         <Route path="/sign-in">
-                            <Login onLogin={handleLogin} message={message} />
+                            <Login onLogin={handleLogin} message={message} loggedIn={loggedIn}/>
                         </Route>
 
                         <ProtectedRoute

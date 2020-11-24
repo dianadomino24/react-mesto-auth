@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import RegisterLoginTemplate from './RegisterLoginTemplate'
 
-const Login = ({ onLogin, message }) => {
+const Login = ({ onLogin, message, loggedIn }) => {
     const [data, setData] = useState({
         email: '',
         password: '',
@@ -23,15 +23,13 @@ const Login = ({ onLogin, message }) => {
             return
         }
         onLogin(email, password)
-            .then((loggedIn) => {
-                if (loggedIn) {
-                    setData({ email: '', password: '' })
-                }
-            })
-            .catch((err) => {
-                console.log(`onLogin: ${err}`)
-            })
     }
+
+        React.useEffect(() => {
+      if (loggedIn) {
+        setData({ email: '', password: '' })
+      }
+    }, [loggedIn]);
 
     return (
         <div className="login">
