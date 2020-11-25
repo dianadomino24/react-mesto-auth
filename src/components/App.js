@@ -298,18 +298,19 @@ function App() {
                         handleRegisterSuccess()
                         infoTooltipOpen()
                         history.push('/sign-in')
-                    } else if (res.status === 400) {
-                        setMessage('Неверно введены данные в Register')
-                        handleRegisterFail()
-                        infoTooltipOpen()
                     }
-                } else {
-                    setMessage('Ошибка при регистрации в Register')
-                    handleRegisterFail()
-                    infoTooltipOpen()
                 }
             })
             .catch((err) => {
+                setMessage('Ошибка при регистрации в Register')
+                handleRegisterFail()
+                infoTooltipOpen()
+                if (err === 400) {
+                    return console.log(
+                        `Некорректно заполнено одно из полей : ${err}`
+                    )
+                }
+
                 console.log(`App onRegister: ${err}`)
             })
     }
