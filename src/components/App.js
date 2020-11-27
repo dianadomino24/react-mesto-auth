@@ -257,7 +257,7 @@ function App() {
         auth.authorize(email, password)
             .then((data) => {
                 if (!data) {
-                    setMessage('Что-то пошло не так при авторизации в Login!')
+                    setMessage('Что-то пошло не так при авторизации.')
                     return false
                 }
                 if (data.token) {
@@ -271,6 +271,9 @@ function App() {
                 }
             })
             .catch((err) => {
+                setMessage('Ошибка при авторизации.')
+                handleRegisterFail()
+                infoTooltipOpen()
                 if (err === 401) {
                     return console.log(
                         `Пользователь с email не найден : ${err}`
